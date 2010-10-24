@@ -29,6 +29,7 @@
 @protected
 	NSString *key;
 	NSString *secret;
+  	NSString *verifier;
 	NSString *session;
 	NSNumber *duration;
 	NSMutableDictionary *attributes;
@@ -38,13 +39,14 @@
 }
 @property(retain, readwrite) NSString *key;
 @property(retain, readwrite) NSString *secret;
+@property(retain, readwrite) NSString *verifier;
 @property(retain, readwrite) NSString *session;
 @property(retain, readwrite) NSNumber *duration;
-@property(retain, readwrite) NSMutableDictionary *attributes;
+@property(retain, readwrite) NSDictionary *attributes;
 @property(readwrite, getter=isForRenewal) BOOL forRenewal;
 
 - (id)initWithKey:(NSString *)aKey secret:(NSString *)aSecret;
-- (id)initWithKey:(NSString *)aKey secret:(NSString *)aSecret session:(NSString *)aSession
+- (id)initWithKey:(NSString *)aKey secret:(NSString *)aSecret verifier:(NSString *)aVerifier session:(NSString *)aSession
 		 duration:(NSNumber *)aDuration attributes:(NSDictionary *)theAttributes created:(NSDate *)creation
 		renewable:(BOOL)renew;
 - (id)initWithHTTPResponseBody:(NSString *)body;

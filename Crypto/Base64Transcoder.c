@@ -160,7 +160,11 @@ else if (theRemainingBytes == 2)
 		outOutputData[theOutIndex++] = '\n';
 		}
 	}
+(void)theOutIndex; // tell the static analyser we don't care that the last postincrement is never read
 return(true);
+
+// MODS THS - silence analyzer warnings about stored values never being read
+#pragma unused(theOutIndex)
 }
 
 bool Base64DecodeData(const void *inInputData, size_t inInputDataSize, void *ioOutputData, size_t *ioOutputDataSize)
@@ -174,7 +178,7 @@ if (*ioOutputDataSize < theDecodedDataSize)
 const u_int8_t *theInPtr = (const u_int8_t *)inInputData;
 u_int8_t *theOutPtr = (u_int8_t *)ioOutputData;
 size_t theInIndex = 0, theOutIndex = 0;
-u_int8_t theOutputOctet;
+u_int8_t theOutputOctet = 0;
 size_t theSequence = 0;
 for (; theInIndex < inInputDataSize; )
 	{

@@ -29,6 +29,9 @@
 
 @implementation OADataFetcher
 
+
+@synthesize delegate;
+
 - (id)init {
 	[super init];
 	responseData = [[NSMutableData alloc] init];
@@ -55,9 +58,8 @@
 															  response:response
 																  data:responseData
 															didSucceed:NO];
-
 	[delegate performSelector:didFailSelector withObject:ticket withObject:error];
-	[ticket release];
+	[ticket release], ticket = nil;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -69,19 +71,17 @@
 															  response:response
 																  data:responseData
 															didSucceed:[(NSHTTPURLResponse *)response statusCode] < 400];
-
 	[delegate performSelector:didFinishSelector withObject:ticket withObject:responseData];
-	[ticket release];
+	[ticket release], ticket = nil;
 }
 
 - (void)fetchDataWithRequest:(OAMutableURLRequest *)aRequest delegate:(id)aDelegate didFinishSelector:(SEL)finishSelector didFailSelector:(SEL)failSelector {
-	[request release];
 	request = [aRequest retain];
     delegate = aDelegate;
     didFinishSelector = finishSelector;
     didFailSelector = failSelector;
     
-    [request prepare];
+    [aRequest prepare];
 
 	connection = [[NSURLConnection alloc] initWithRequest:aRequest delegate:self];
 }

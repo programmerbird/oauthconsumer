@@ -254,7 +254,12 @@
 		 before the token is authorized (useful for iPhone) */
 		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@authorize?oauth_token=%@&oauth_callback=%@",
 										   oauthBase, token.key, callback]];
+		
+#if TARGET_OS_IPHONE
 		[[UIApplication sharedApplication] openURL:url];
+#else
+		[[NSWorkspace sharedWorkspace] openURL:url];
+#endif
 
 	}
 	[call release];

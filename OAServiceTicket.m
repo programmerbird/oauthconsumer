@@ -48,4 +48,8 @@
 	return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 }
 
+- (NSString *)description {
+	return [NSString stringWithFormat:@"<OAServiceTicket: body=%@>", [self body]];
+}
+
 @end

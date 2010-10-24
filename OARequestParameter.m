@@ -37,6 +37,12 @@
     return self;
 }
 
+- (void)dealloc {
+	[name release];
+	[value release];
+	[super dealloc];
+}
+
 - (NSString *)URLEncodedName {
 	return self.name;
 //    return [self.name encodedURLParameterString];

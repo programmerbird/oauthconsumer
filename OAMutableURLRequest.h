@@ -43,8 +43,16 @@
     NSString *nonce;
     NSString *timestamp;
 }
-@property(readonly) NSString *signature;
-@property(readonly) NSString *nonce;
+@property(nonatomic, retain) NSString *signature;
+@property(nonatomic, retain) NSString *nonce;
+
+
+@property(nonatomic, retain) OAConsumer *consumer;
+@property(nonatomic, retain) OAToken *token;
+@property(nonatomic, retain) NSString *realm;
+@property(nonatomic, retain) id<OASignatureProviding> signatureProvider;
+@property(nonatomic, retain) NSString *timestamp;
+
 
 - (id)initWithURL:(NSURL *)aUrl
 		 consumer:(OAConsumer *)aConsumer
