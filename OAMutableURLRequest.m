@@ -119,7 +119,8 @@ signatureProvider:(id<OASignatureProviding, NSObject>)aProvider
 
 - (void)prepare {
     // sign
-	NSLog(@"\nprep_string:%@", [self _signatureBaseString]);
+	
+	// NSLog(@"\nprep_string:%@", [self _signatureBaseString]);
 	self.signature = [signatureProvider signClearText:[self _signatureBaseString]
                                       withSecret:[NSString stringWithFormat:@"%@&%@",
                                                   self.consumer.secret,
@@ -143,6 +144,8 @@ signatureProvider:(id<OASignatureProviding, NSObject>)aProvider
 	
 	NSString *oauthHeader = [NSString stringWithFormat:@"OAuth %@", [chunks componentsJoinedByString:@", "]];
 	[chunks release];
+	
+	// NSLog(@"header: %@", oauthHeader);
 
     [self setValue:oauthHeader forHTTPHeaderField:@"Authorization"];
 }

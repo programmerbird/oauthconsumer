@@ -83,21 +83,22 @@
 
 	for (NSString *pair in pairs) {
         NSArray *elements = [pair componentsSeparatedByString:@"="];
+		NSString *value = [[elements objectAtIndex: 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         if ([[elements objectAtIndex:0] isEqualToString:@"oauth_token"]) {
-            aKey = [elements objectAtIndex:1];
+            aKey = value;
         } else if ([[elements objectAtIndex:0] isEqualToString:@"oauth_token_secret"]) {
-            aSecret = [elements objectAtIndex:1];
+            aSecret = value;
         } else if ([[elements objectAtIndex:0] isEqualToString:@"oauth_verifier"]) {
-          	aVerifier = [elements objectAtIndex:1];
+          	aVerifier = value;
         } else if ([[elements objectAtIndex:0] isEqualToString:@"oauth_session_handle"]) {
-			aSession = [elements objectAtIndex:1];
+			aSession = value;
 		} else if ([[elements objectAtIndex:0] isEqualToString:@"oauth_token_duration"]) {
-			aDuration = [[self class] durationWithString:[elements objectAtIndex:1]];
+			aDuration = [[self class] durationWithString:value];
 			creationDate = [NSDate date];
 		} else if ([[elements objectAtIndex:0] isEqualToString:@"oauth_token_attributes"]) {
 			attrs = [[self class] attributesWithString:[[elements objectAtIndex:1] decodedURLString]];
 		} else if ([[elements objectAtIndex:0] isEqualToString:@"oauth_token_renewable"]) {
-			NSString *lowerCase = [[elements objectAtIndex:1] lowercaseString];
+			NSString *lowerCase = [value lowercaseString];
 			if ([lowerCase isEqualToString:@"true"] || [lowerCase isEqualToString:@"t"]) {
 				renew = YES;
 			}
