@@ -84,6 +84,8 @@
     [aRequest prepare];
 
 	connection = [[NSURLConnection alloc] initWithRequest:aRequest delegate:self];
+	
+	NSLog(@"--");
 }
 
 @end

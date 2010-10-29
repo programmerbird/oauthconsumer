@@ -229,7 +229,11 @@
 - (NSDictionary *)parameters
 {
 	NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
-
+	if(self.verifier != nil){
+		[params setObject:self.verifier forKey:@"oauth_verifier"];
+	}
+	
+	
 	if (key) {
 		[params setObject:key forKey:@"oauth_token"];
 		if ([self isForRenewal]) {

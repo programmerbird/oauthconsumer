@@ -120,12 +120,25 @@ signatureProvider:(id<OASignatureProviding, NSObject>)aProvider
 - (void)prepare {
     // sign
 	
-	// NSLog(@"\nprep_string:%@", [self _signatureBaseString]);
-	self.signature = [signatureProvider signClearText:[self _signatureBaseString]
-                                      withSecret:[NSString stringWithFormat:@"%@&%@",
-                                                  self.consumer.secret,
-                                                  self.token.secret ? self.token.secret : @""]];
-    
+	NSString *prepString = [self _signatureBaseString];
+	NSString *secretString = [NSString stringWithFormat:@"%@&%@",
+							  [self.consumer.secret encodedURLParameterString],
+							  self.token.secret ? [self.token.secret encodedURLParameterString] : @""];
+	NSString *sig = [signatureProvider signClearText:prepString
+                                      withSecret:secretString];
+	/*
+	NSLog(@"\nprep_string:%@", prepString);
+	NSLog(@"      secret: %@", secretString);
+	NSLog(@"      method: %@", [self HTTPMethod]);
+	NSLog(@"         url: %@", [[self URL] absoluteString]);
+	NSLog(@"    toke_key: %@", self.token.key);
+	NSLog(@"token_secret: %@", self.token.secret);
+	NSLog(@"   timestamp: %@", self.timestamp);
+	NSLog(@"       nonce: %@", self.nonce);
+	NSLog(@"   signature: %@", sig);
+	*/
+    self.signature = sig;
+	
     // set OAuth headers
 	NSMutableArray *chunks = [[NSMutableArray alloc] init];
 	[chunks addObject:[NSString stringWithFormat:@"realm=\"%@\"", [self.realm encodedURLParameterString]]];
@@ -145,8 +158,8 @@ signatureProvider:(id<OASignatureProviding, NSObject>)aProvider
 	NSString *oauthHeader = [NSString stringWithFormat:@"OAuth %@", [chunks componentsJoinedByString:@", "]];
 	[chunks release];
 	
-	// NSLog(@"header: %@", oauthHeader);
-
+	
+	// NSLog(@"      header: %@", oauthHeader);
     [self setValue:oauthHeader forHTTPHeaderField:@"Authorization"];
 }
 
